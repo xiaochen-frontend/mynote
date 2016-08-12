@@ -1,0 +1,182 @@
+# use third package
+SimpleAjaxUploader.min.js
+underscore-min.js
+jquery.min.js
+
+
+   
+# about template
+
+<script type="text/tpl" id="bannerTpl">
+    <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-default btnUp">^ 向上</button>
+                            <button type="button" class="btn btn-default btnDown">v 向下</button>
+                            <button type="button" class="btn btn-default btnDel">x 删除</button>
+                            <button type="button" class="btn btn-default btnAdd">A 添加</button>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2"><label class="control-label">文章URL:</label></div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control url" name="banner[url][]" value=""
+                                       placeholder="文章URL: http://credit.u51.com/evt/travelling2016.html">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2"><label class="control-label">图片上传:</label></div>
+                            <div class="col-sm-10">
+                                <img src="" style="width:198px;height:108px;"/>
+                                <input type="hidden" name="banner[pic][]" class="hidenPic"/>
+                                <input type="button" class="btn btn-primary fl upfile" value="上传"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</script>
+<script type="text/tpl" id="tuijianTpl">
+    <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-default btnUp">^ 向上</button>
+                            <button type="button" class="btn btn-default btnDown">v 向下</button>
+                            <button type="button" class="btn btn-default btnDel">x 删除</button>
+                            <button type="button" class="btn btn-default btnAdd">A 添加</button>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2"><label class="control-label">文章URL:</label></div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control url" name="tj[url][]" value=""
+                                       placeholder="文章URL: http://credit.u51.com/evt/travelling2016.html" datatype="*" nullmsg="请输入文章URL">
+                                <span class="Validform_checktip"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2"><label class="control-label">文章标题:</label></div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control url" name="tj[title][]" value=""
+                                       placeholder="文章的标题" datatype="*" nullmsg="请输入标题">
+                                <span class="Validform_checktip"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2"><label class="control-label">作者名称:</label></div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control url" name="tj[author][]" value=""
+                                       placeholder="请输入作者" datatype="*" nullmsg="请输入作者">
+                                <span class="Validform_checktip"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2"><label class="control-label">标签名称:</label></div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control url" name="tj[label][]" value=""
+                                       placeholder="请输入标签名称" datatype="*" nullmsg="请输入标签名称">
+                                <span class="Validform_checktip"></span>
+                            </div>
+                            <div class="col-sm-2"><label class="control-label">标签背景:</label></div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control url" name="tj[labelBg][]" value=""
+                                       placeholder="请输入标签背景颜色: #000000">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2"><label class="control-label">图片上传:</label></div>
+                            <div class="col-sm-10">
+                                <img src="" style="width:198px;height:108px;"/>
+                                <input type="hidden" name="tj[pic][]" class="hidenPic"/>
+                                <input type="button" class="btn btn-primary fl upfile" value="上传"/>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+</script>
+
+
+# JS code start===============================================================
+<script>
+    var uploadTo = '/_upload/ceping/daren_pic';
+    var JBDom = {
+        init: function (arr) {
+            this.eleArr = arr;
+            var _index = "", upobj = "",_obj = "";
+            for (_index in this.eleArr) {
+                _obj = $(this.eleArr[_index].tpl);
+                if (_index != 2) // 问答没有上传
+                    upobj = this.createUpload(_obj);
+                this.eleArr[_index].el.append(_obj);
+            }
+            this.bindEvt();
+        },
+        bindEvt: function () {
+            var self = this;
+            var ele = null,_this = "";
+            for (var obj in self.eleArr) {
+                ele = self.eleArr[obj];
+                $(self.eleArr[obj]['el']).on('click', '.btnAdd', {element:ele,index:obj}, function (event) {
+                    var element = event.data.element,index = event.data.index;
+                    _this = $(element.tpl);
+                    if (index != 2) // 问答没有上传
+                        self.createUpload(_this);
+                    element.el.append(_this);
+                }).on('click', '.btnUp', function () {
+                    var p = $(this).parents('.panel'), prev = p.prev('.panel');
+                    if (prev.length) {
+                        p.remove();
+                        prev.before(p);
+                    }
+                }).on('click', '.btnDown', function () {
+                    var p = $(this).parents('.panel'), next = p.next('.panel');
+                    if (next.length) {
+                        p.remove();
+                        next.after(p);
+                    }
+                }).on('click', '.btnDel', function () {
+                    $(this).parents('.panel').remove();
+                });
+            }
+
+        },
+        createUpload: function (upObj) {
+
+            return new ss.SimpleUpload({
+                button: upObj.find(".upfile"),
+                url: uploadTo,
+                multipart: true,
+                name: 'pic',
+                responseType: 'json',
+                allowedExtensions: ["jpg", "jpeg", "png", "gif"],
+                queue: false,
+                onComplete: function (filename, resp, btn, fileSize) {
+                    console.log(filename, resp, btn, fileSize);
+                    if (resp) {
+                        var pic = upObj.find(".hidenPic");
+                        pic.val(resp.val);
+                        upObj.find("img").attr('src', resp.val);
+                    } else {
+                        alert('图片上传失败' + resp);
+                    }
+                },
+                _nop: 1
+            });
+        }
+    };
+</script>
+
+# initial here
+
+JBDom.init([
+            {'tpl': $("#bannerTpl").html(), 'el': $(".banner")},
+            {'tpl': $("#tuijianTpl").html(), 'el': $(".tuijian")},
+            {'tpl': $("#wendaTpl").html(), 'el': $(".wenda")},
+            {'tpl': $("#jxTpl").html(), 'el': $(".jingxuan")}
+        ]);
