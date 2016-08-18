@@ -1,9 +1,3 @@
-/**
- * 网站统计代码
- * @author             张锋 <zhangfeng_5@163.com>
- * @version		V3.0
- * @date	2015/09/19
- */
 var _fbEventAnalysis = null ;
 (function() {
     function c() {
