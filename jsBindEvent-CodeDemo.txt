@@ -21,7 +21,7 @@ jquery.min.js
                             <div class="col-sm-2"><label class="control-label">文章URL:</label></div>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control url" name="banner[url][]" value=""
-                                       placeholder="文章URL: http://credit.u51.com/evt/travelling2016.html">
+                                       placeholder="文章URL: http://example.com/evt/travelling2016.html">
                             </div>
                         </div>
 
@@ -50,7 +50,7 @@ jquery.min.js
                             <div class="col-sm-2"><label class="control-label">文章URL:</label></div>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control url" name="tj[url][]" value=""
-                                       placeholder="文章URL: http://credit.u51.com/evt/travelling2016.html" datatype="*" nullmsg="请输入文章URL">
+                                       placeholder="文章URL: http://example.com/evt/travelling2016.html" datatype="*" nullmsg="请输入文章URL">
                                 <span class="Validform_checktip"></span>
                             </div>
                         </div>
